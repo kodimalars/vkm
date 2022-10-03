@@ -1,5 +1,6 @@
 package com.angular.jenkins.vkm.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.angular.jenkins.vkm.model.Document;
+import com.angular.jenkins.vkm.model.DocumentType;
 import com.angular.jenkins.vkm.service.DocumentService;
 
 @RestController
@@ -21,17 +23,11 @@ public class DataController
 	@Autowired
 	DocumentService docService;
 
-	@PostMapping("/document")
-	public Document upload(Document doc)
-	{
-		String str = "I am kodi";
-		str.replace(" ", "");
-		return new Document();
-	}
-
 	@GetMapping("/document")
 	public Document getDocument()
 	{
+		String str = "I am kodi";
+		str.replace(" ", "");
 		return new Document();
 	}
 
@@ -40,11 +36,15 @@ public class DataController
 	{
 		List<Document> docList = docService.findByPath(doc.getPath());
 		docList.stream().forEach(e -> {
-			docService.updateByDocPath(doc.getName(), "new path");
-			System.out.println("Koids " + e.toString());
+			System.out.println("kodi " + e.toString());
 		});
+		DocumentType dt = new DocumentType();
+		dt.setCreatedDate(new Date());
+		dt.setType(doc.getDocumentType());
+		doc.setDocType(dt);
 
-		docService.save(doc);
+		docService.save(doc); 
+		
 		return doc;
 	}
 
